@@ -1,0 +1,25 @@
+name: Build Dylib
+on: [push]
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Theos
+      uses: Randomblock1/theos-action@v1
+      
+    - name: Compile
+      run: |
+        make clean || true
+        make
+        
+    - name: Package
+      run: |
+        make package
+        
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Bypass-Dylib
+        path: "**/*.dylib"
